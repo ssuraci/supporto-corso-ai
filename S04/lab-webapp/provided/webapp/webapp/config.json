@@ -1,0 +1,9 @@
+{
+  "db_host": "192.168.56.12",
+  "db_user": "appuser",
+  "db_password": "AppPass123!",
+  "db_name": "appdb",
+  "db_port": 3306,
+  "app_port": 5000,
+  "log_level": "INFO"
+}

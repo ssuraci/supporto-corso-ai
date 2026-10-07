@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8">
+  <title>LAB S04 — Dati applicativi</title>
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <style>
+    body { font-family: sans-serif; margin: 2rem; }
+    nav button { margin-right: .5rem; padding: .4rem 1rem; cursor: pointer; }
+    nav button.active { font-weight: bold; }
+    table { border-collapse: collapse; margin-top: 1rem; width: 100%; }
+    th, td { border: 1px solid #ccc; padding: .4rem .6rem; text-align: left; }
+    th { background: #f0f0f0; }
+  </style>
+</head>
+<body>
+  <h1>Dati applicativi</h1>
+  <nav>
+    <button data-table="clienti" class="active">Clienti</button>
+    <button data-table="prodotti">Prodotti</button>
+    <button data-table="ordini">Ordini</button>
+  </nav>
+  <table id="data-table">
+    <thead><tr></tr></thead>
+    <tbody></tbody>
+  </table>
+
+  <script>
+    function load(table) {
+      $.getJSON("/api/" + table, function (rows) {
+        var $thead = $("#data-table thead tr").empty();
+        var $tbody = $("#data-table tbody").empty();
+        if (!rows.length) { return; }
+        $.each(Object.keys(rows[0]), function (_, col) {
+          $thead.append($("<th>").text(col));
+        });
+        $.each(rows, function (_, row) {
+          var $tr = $("<tr>");
+          $.each(row, function (_, val) {
+            $tr.append($("<td>").text(val));
+          });
+          $tbody.append($tr);
+        });
+      });
+    }
+
+    $("nav button").on("click", function () {
+      $("nav button").removeClass("active");
+      $(this).addClass("active");
+      load($(this).data("table"));
+    });
+
+    load("clienti");
+  </script>
+</body>
+</html>
